@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield UZ — Raqamli Dunyoda O'zingizni Himoya Qiling</title>
+    <style>
+        /* =========================================================
+           1. ASOSIY O'ZGARUVCHILAR VA RESET (CSS VARIABLES)
+           ========================================================= */
+        :root {
+            --bg-primary: #060b19;
+            --bg-secondary: #0b1224;
+            --bg-card: #0d152a;
+            --bg-card-hover: #111c36;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-cyan: #00f0ff;
+            --accent-cyan-dim: rgba(0, 240, 255, 0.12);
+            --accent-emerald: #10b981;
+            --accent-emerald-dim: rgba(16, 185, 129, 0.12);
+            --accent-rose: #f43f5e;
+            --accent-rose-dim: rgba(244, 63, 94, 0.12);
+            --accent-amber: #f59e0b;
+            --accent-amber-dim: rgba(245, 158, 11, 0.12);
+            --accent-purple: #a855f7;
+            --accent-purple-dim: rgba(168, 85, 247, 0.12);
+            --border-color: rgba(0, 240, 255, 0.16);
+            --border-subtle: rgba(148, 163, 184, 0.14);
+            --glow-cyan: 0 0 25px rgba(0, 240, 255, 0.18);
+            --glow-emerald: 0 0 25px rgba(16, 185, 129, 0.2);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Kiber to'r orqa foni */
+        .cyber-grid-bg {
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+            background-size: 42px 42px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* =========================================================
+           2. NAVBAR (GLASSMORPHISM)
+           ========================================================= */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 11, 25, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 74px;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(16, 185, 129, 0.2));
+            border: 1px solid rgba(0, 240, 255, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-cyan);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .brand span {
+            color: var(--accent-cyan);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: var(--accent-emerald-dim);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #34d399;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+            box-shadow: 0 0 10px var(--accent-emerald);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 9px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           3. HERO QISMI VA LIVE TERMINAL
+           ========================================================= */
+        .hero {
+            position: relative;
+            padding: 80px 0 90px;
+            border-bottom: 1px solid var(--border-subtle);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -120px;
+            left: 10%;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.14) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: -140px;
+            right: 8%;
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 48px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--accent-cyan-dim);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.025em;
+            margin-bottom: 20px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #00f0ff 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.08rem;
+            max-width: 580px;
+            margin-bottom: 32px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 26px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.96rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00f0ff 0%, #10b981 100%);
+            color: #040812;
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 240, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-cyan);
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .stat-item strong {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .stat-item strong.cyan { color: var(--accent-cyan); }
+        .stat-item strong.emerald { color: var(--accent-emerald); }
+
+        .stat-item span {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        /* Terminal Kartasi */
+        .terminal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 7px;
+        }
+
+        .terminal-dots span {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .terminal-title {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            font-family: var(--font-mono);
+            font-size: 0.84rem;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .term-cmd {
+            color: var(--accent-emerald);
+        }
+
+        .term-log {
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            line-height: 1.45;
+        }
+
+        .log-danger {
+            background: var(--accent-rose-dim);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            color: #fda4af;
+        }
+
+        .log-warn {
+            background: var(--accent-amber-dim);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fcd34d;
+        }
+
+        .log-safe {
+            background: var(--accent-emerald-dim);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+        }
+
+        .scan-meter {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .scan-meter-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-family: var(--font-mono);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #060b19;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill-live {
+            height: 100%;
+            width: 96%;
+            background: linear-gradient(90deg, #00f0ff, #10b981);
+            border-radius: 999px;
+        }
+
+        /* =========================================================
+           4. BO'LIM SARLAVHALARI (SECTIONS)
+           ========================================================= */
+        .section {
+            padding: 85px 0;
+        }
+
+        .section-alt {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 54px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 999px;
+            background: var(--accent-cyan-dim);
+            border: 1px solid rgba(0, 240, 255, 0.28);
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 14px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.75rem, 3.2vw, 2.45rem);
+            font-weight: 800;
+            margin-bottom: 14px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* =========================================================
+           5. KIBER TAHDIDLAR (6 TA KARTA)
+           ========================================================= */
+        .threats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .threat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .threat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 240, 255, 0.45);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .threat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .threat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-cyan { background: var(--accent-cyan-dim); color: var(--accent-cyan); border: 1px solid rgba(0, 240, 255, 0.3); }
+        .icon-rose { background: var(--accent-rose-dim); color: var(--accent-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+        .icon-amber { background: var(--accent-amber-dim); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .icon-purple { background: var(--accent-purple-dim); color: var(--accent-purple); border: 1px solid rgba(168, 85, 247, 0.3); }
+        .icon-emerald { background: var(--accent-emerald-dim); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+        .risk-pill {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .risk-high { background: var(--accent-rose-dim); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.3); }
+        .risk-med { background: var(--accent-amber-dim); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        .threat-card h3 {
+            font-size: 1.22rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .threat-desc {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 20px;
+        }
+
+        .threat-defense {
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .defense-label {
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-emerald);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .threat-defense p {
+            font-size: 0.86rem;
+            color: #cbd5e1;
+        }
+
+        /* =========================================================
+           6. PAROL TEKSHIRGICH VA GENERATOR
+           ========================================================= */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 28px;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .tool-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 22px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .cyber-input {
+            width: 100%;
+            padding: 15px 52px 15px 18px;
+            background: #060b19;
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 1.05rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .cyber-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.15);
+        }
+
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .eye-btn:hover {
+            color: var(--accent-cyan);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .strength-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .strength-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #060b19;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .strength-bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .metric-box {
+            background: #060b19;
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 14px 16px;
+        }
+
+        .metric-box span {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .metric-box strong {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--accent-cyan);
+        }
+
+        .checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .check-item.passed {
+            color: var(--accent-emerald);
+            font-weight: 600;
+        }
+
+        .check-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .privacy-note {
+            font-size: 0.8rem;
+            color: #67e8f9;
+            background: rgba(0, 240, 255, 0.07);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 11px 14px;
+            border-radius: 12px;
+        }
+
+        /* Generator stillari */
+        .gen-output-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: #060b19;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+        }
+
+        .gen-pwd-text {
+            font-family: var(--font-mono);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #34d399;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .copy-btn {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(16, 185, 129, 0.28);
+        }
+
+        .slider-row {
+            margin-bottom: 18px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            margin-bottom: 8px;
+        }
+
+        .cyber-range {
+            width: 100%;
+            accent-color: var(--accent-cyan);
+            cursor: pointer;
+        }
+
+        .checkbox-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: #060b19;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            font-size: 0.88rem;
+            cursor: pointer;
+        }
+
+        .checkbox-row input {
+            width: 17px;
+            height: 17px;
+            accent-color: var(--accent-emerald);
+            cursor: pointer;
+        }
+
+        .gen-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .gen-buttons .btn {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* =========================================================
+           7. OLTIN QOIDALAR (6 TA RAQAMLANGAN KARTA)
+           ========================================================= */
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .rule-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 26px;
+            position: relative;
+            transition: border-color 0.25s, transform 0.25s;
+        }
+
+        .rule-card:hover {
+            border-color: rgba(16, 185, 129, 0.45);
+            transform: translateY(-4px);
+        }
+
+        .rule-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(16, 185, 129, 0.18));
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .rule-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .rule-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* =========================================================
+           8. INTERAKTIV KIBER-SAVODXONLIK TESTI
+           ========================================================= */
+        .quiz-wrapper {
+            max-width: 760px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 34px;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .quiz-meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.84rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .quiz-progress {
+            width: 100%;
+            height: 8px;
+            background: #060b19;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+
+        .quiz-progress-bar {
+            height: 100%;
+            width: 20%;
+            background: linear-gradient(90deg, #00f0ff, #10b981);
+            transition: width 0.3s ease;
+        }
+
+        .quiz-question {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 22px;
+            line-height: 1.45;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 15px 18px;
+            background: #060b19;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--accent-cyan);
+            background: #0b142c;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(0, 240, 255, 0.12);
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.82rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.16);
+            border-color: var(--accent-emerald);
+            color: #a7f3d0;
+        }
+
+        .option-btn.wrong {
+            background: rgba(244, 63, 94, 0.16);
+            border-color: var(--accent-rose);
+            color: #fecdd3;
+        }
+
+        .quiz-feedback {
+            display: none;
+            padding: 15px 18px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .feedback-ok {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #6ee7b7;
+        }
+
+        .feedback-bad {
+            background: rgba(244, 63, 94, 0.12);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            color: #fda4af;
+        }
+
+        .quiz-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .quiz-result {
+            display: none;
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .result-score-circle {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: var(--accent-emerald-dim);
+            border: 2px solid var(--accent-emerald);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--accent-emerald);
+            box-shadow: var(--glow-emerald);
+        }
+
+        .quiz-result h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-result p {
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto 26px;
+        }
+
+        /* =========================================================
+           9. FOOTER VA TOAST BILDIRISHNOMA
+           ========================================================= */
+        .footer {
+            padding: 48px 0;
+            border-top: 1px solid var(--border-color);
+            background: #040812;
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-reminder {
+            font-size: 0.86rem;
+            color: var(--text-secondary);
+            max-width: 520px;
+        }
+
+        .footer-copy {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            background: #0d152a;
+            border: 1px solid var(--accent-emerald);
+            color: #6ee7b7;
+            padding: 13px 20px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* =========================================================
+           10. MOSLASHUVCHANLIK (RESPONSIVE MEDIA QUERIES)
+           ========================================================= */
+        @media (max-width: 960px) {
+            .hero-grid,
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            .threats-grid,
+            .rules-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 720px) {
+            .nav-links,
+            .status-badge {
+                display: none;
+            }
+            .mobile-toggle {
+                display: inline-flex;
+            }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 74px;
+                left: 0;
+                right: 0;
+                background: #0b1224;
+                padding: 20px;
+                border-bottom: 1px solid var(--border-color);
+                gap: 16px;
+            }
+            .threats-grid,
+            .rules-grid,
+            .checklist,
+            .metrics-row {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding: 55px 0 65px;
+            }
+            .quiz-wrapper,
+            .tool-card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+<body class="cyber-grid-bg">
+
+    <!-- Toast Bildirishnoma -->
+    <div id="toast" class="toast">Nusxa olindi!</div>
+
+    <!-- 1. STICKY GLASSMORPHISM NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="brand">
+                <div class="brand-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                </div>
+                Cyber<span>Shield</span> UZ
+            </a>
+
+            <nav id="nav-links" class="nav-links">
+                <a href="#tahdidlar">Tahdidlar</a>
+                <a href="#parol-tahlili">Parol Tahlili</a>
+                <a href="#oltin-qoidalar">Oltin Qoidalar</a>
+                <a href="#kiber-test">Kiber Test</a>
+            </nav>
+
+            <div class="status-badge">
+                <span class="pulse-dot"></span>
+                Tizim Himoyalangan
+            </div>
+
+            <button id="mobile-toggle" class="mobile-toggle" aria-label="Menyu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div>
+                <div class="hero-tag">
+                    <span>●</span> KIBERXAVFSIZLIK PORTALI // 2026
+                </div>
+                <h1>
+                    Raqamli Dunyoda <br>
+                    <span class="gradient-text">O'zingizni Himoya Qiling</span>
+                </h1>
+                <p>
+                    Zamonaviy kiberhujumlar, firibgarlik sxemalari va zararli dasturlardan himoyalanish usullarini o'rganing. Shaxsiy parollaringiz mustahkamligini tekshiring va raqamli savodxonligingizni oshiring.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#parol-tahlili" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        Parolni Tekshirish
+                    </a>
+                    <a href="#kiber-test" class="btn btn-secondary">
+                        Bilimni Sinash (Test)
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <strong>95%</strong>
+                        <span>Hujumlar inson xatosi tufayli</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong class="cyan">256-bit</strong>
+                        <span>AES shifrlash standarti</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong class="emerald">99.9%</strong>
+                        <span>2FA orqali himoya darajasi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Threat Monitor Terminal Card -->
+            <div class="terminal-card">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <div class="terminal-title">cybershield_monitor.sh</div>
+                </div>
+
+                <div class="terminal-body">
+                    <div class="term-cmd">$ ./security_scan --realtime</div>
+                    <div class="term-log log-danger">
+                        <strong>[BLOKLANDI] Fishing Hujumi:</strong><br>
+                        Soxta bank havolasi aniqlandi: <code>uz-card-bonus[.]xyz</code>
+                    </div>
+                    <div class="term-log log-warn">
+                        <strong>[OGOHLANTIRISH] Zaif Parol:</strong><br>
+                        <code>qwerty123</code> paroli 0.001 soniyada buziladi!
+                    </div>
+                    <div class="term-log log-safe">
+                        <strong>[HIMOYA FAOL] Tarmoq Xavfsiz:</strong><br>
+                        Firewall, SSL/TLS va 2FA protokollari ishlamoqda.
+                    </div>
+                </div>
+
+                <div class="scan-meter">
+                    <div class="scan-meter-top">
+                        <span>Umumiy Himoya Indeksi</span>
+                        <span style="color: #34d399; font-weight: 700;">96% OPTIMAL</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill-live"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. KIBER TAHDIDLAR (6 TA KARTA) -->
+    <section id="tahdidlar" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tahdidlar Tahlili</span>
+                <h2>Asosiy Kiber Tahdidlar Turlari</h2>
+                <p>Internet tarmog'ida eng ko'p uchraydigan 6 ta xavf turi va ularga qarshi samarali himoya choralari bilan tanishing.</p>
+            </div>
+
+            <div class="threats-grid" id="threats-container"></div>
+        </div>
+    </section>
+
+    <!-- 4. INTERAKTIV PAROL TEKSHIRGICH VA GENERATOR -->
+    <section id="parol-tahlili" class="section section-alt">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Kripto Laboratoriya</span>
+                <h2>Parol Kuchini Tekshiruvchi va Generator</h2>
+                <p>Parolingiz xakerlar hujumiga qanchalik bardosh berishini tekshiring yoki bir bosishda buzilmas parol yarating.</p>
+            </div>
+
+            <div class="tools-grid">
+                <!-- Parol Tekshirgich -->
+                <div class="tool-card">
+                    <h3 class="tool-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2.2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        Parol Mustahkamligi Tahlili
+                    </h3>
+                    <p class="tool-subtitle">Parolingizni kiriting — tizim uning entropiyasi va buzish vaqtini hisoblaydi.</p>
+
+                    <div class="input-group">
+                        <input type="password" id="pwd-input" class="cyber-input" placeholder="Masalan: KiberHimoya#2026!" autocomplete="off">
+                        <button type="button" id="toggle-pwd" class="eye-btn" title="Ko'rsatish/Yashirish">
+                            <svg id="eye-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="strength-header">
+                        <span style="color: var(--text-secondary);">Xavfsizlik darajasi:</span>
+                        <strong id="strength-text" style="font-family: var(--font-mono); color: var(--text-muted);">Kiritilmagan</strong>
+                    </div>
+                    <div class="strength-bar-bg">
+                        <div id="strength-fill" class="strength-bar-fill"></div>
+                    </div>
+
+                    <div class="metrics-row">
+                        <div class="metric-box">
+                            <span>Buzish uchun taxminiy vaqt:</span>
+                            <strong id="crack-time">—</strong>
+                        </div>
+                        <div class="metric-box">
+                            <span>Parol entropiyasi:</span>
+                            <strong id="entropy-val">0 bit</strong>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <div id="chk-len" class="check-item"><span class="check-dot">✓</span> Kamida 8+ belgi</div>
+                        <div id="chk-upper" class="check-item"><span class="check-dot">✓</span> Katta harflar (A-Z)</div>
+                        <div id="chk-num" class="check-item"><span class="check-dot">✓</span> Raqamlar (0-9)</div>
+                        <div id="chk-sym" class="check-item"><span class="check-dot">✓</span> Maxsus belgilar (!@#$)</div>
+                    </div>
+
+                    <div class="privacy-note">
+                        🔒 <strong>100% Maxfiy:</strong> Siz kiritgan parol hech qanday serverga yuborilmaydi. Barcha hisob-kitoblar faqat o'z brauzeringiz ichida amalga oshiriladi.
+                    </div>
+                </div>
+
+                <!-- Parol Generatori -->
+                <div class="tool-card">
+                    <h3 class="tool-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2">
+                            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+                        </svg>
+                        Kriptografik Parol Generatori
+                    </h3>
+                    <p class="tool-subtitle">Tasodifiy va o'ta mustahkam parol yarating.</p>
+
+                    <div class="gen-output-box">
+                        <span id="gen-result" class="gen-pwd-text">Kz9#mP4$vL2@qR8!</span>
+                        <button type="button" id="copy-gen" class="copy-btn">Nusxa olish</button>
+                    </div>
+
+                    <div class="slider-row">
+                        <div class="slider-label">
+                            <span>Parol uzunligi:</span>
+                            <strong id="len-display" style="color: var(--accent-cyan); font-family: var(--font-mono);">16 belgi</strong>
+                        </div>
+                        <input type="range" id="gen-slider" class="cyber-range" min="8" max="32" value="16">
+                    </div>
+
+                    <div class="checkbox-list">
+                        <label class="checkbox-row">
+                            <span>Katta harflar (A-Z)</span>
+                            <input type="checkbox" id="opt-upper" checked>
+                        </label>
+                        <label class="checkbox-row">
+                            <span>Raqamlar (0-9)</span>
+                            <input type="checkbox" id="opt-num" checked>
+                        </label>
+                        <label class="checkbox-row">
+                            <span>Maxsus belgilar (!@#$%^&*)</span>
+                            <input type="checkbox" id="opt-sym" checked>
+                        </label>
+                    </div>
+
+                    <div class="gen-buttons">
+                        <button type="button" id="btn-generate" class="btn btn-primary">Yangi Yaratish</button>
+                        <button type="button" id="btn-test-gen" class="btn btn-secondary">Tekshirish</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. XAVFSIZLIKNING 6 OLTIN QOIDASI -->
+    <section id="oltin-qoidalar" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Amaliy Qo'llanma</span>
+                <h2>Xavfsizlikning 6 Oltin Qoidasi</h2>
+                <p>Kundalik raqamli hayotingizda ushbu 6 ta qoidaga amal qilish sizni ko'pchilik kiberhujumlardan saqlab qoladi.</p>
+            </div>
+
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <div class="rule-number">01</div>
+                    <h3>Ikki Faktorli Autentifikatsiya (2FA)</h3>
+                    <p>Telegram, Google, Instagram va bank ilovalarida 2FA ni yoqing. Parolingiz o'g'irlansa ham, qo'shimcha kod bo'lmasa xaker akkauntga kira olmaydi.</p>
+                </div>
+
+                <div class="rule-card">
+                    <div class="rule-number">02</div>
+                    <h3>Dasturlarni Muntazam Yangilang</h3>
+                    <p>Telefon, kompyuter tizimi va ilovalarning yangi versiyalarini o'z vaqtida o'rnating. Yangilanishlar xakerlar foydalanadigan eski xavfsizlik tuynuklarini yopadi.</p>
+                </div>
+
+                <div class="rule-card">
+                    <div class="rule-number">03</div>
+                    <h3>Shubhali Havolalarga Bosmang</h3>
+                    <p>"Pul yutdingiz", "Tekin Telegram Premium" yoki "Kartangiz bloklandi" kabi shoshilinch xabarlardagi noma'lum havolalarga aslo kirmang.</p>
+                </div>
+
+                <div class="rule-card">
+                    <div class="rule-number">04</div>
+                    <h3>Ochiq Wi-Fi va VPN Xavfsizligi</h3>
+                    <p>Kafe va aeroportlardagi parolsiz Wi-Fi tarmoqlarida bank ilovalariga kirmang. Zarur bo'lganda ishonchli VPN xizmatidan foydalaning.</p>
+                </div>
+
+                <div class="rule-card">
+                    <div class="rule-number">05</div>
+                    <h3>Ma'lumotlardan Zaxira Nusxa Oling</h3>
+                    <p>Muhim hujjat va rasmlaringizni tashqi xotira (SSD/fleshka) va bulutli xotirada saqlang. Bu Ransomware tovlamachi viruslaridan himoya qiladi.</p>
+                </div>
+
+                <div class="rule-card">
+                    <div class="rule-number">06</div>
+                    <h3>Har Bir Saytga Alohida Kuchli Parol</h3>
+                    <p>Bir xil parolni bir nechta platformada ishlatmang. Murakkab parollarni saqlash uchun ishonchli parol menejerlaridan foydalaning.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. KIBER-SAVODXONLIK TESTI -->
+    <section id="kiber-test" class="section section-alt">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Interaktiv Viktorina</span>
+                <h2>Kiber-Savodxonlik Testi</h2>
+                <p>5 ta hayotiy vaziyat asosida kiberxavfsizlik bo'yicha bilimingizni tekshirib ko'ring.</p>
+            </div>
+
+            <div class="quiz-wrapper">
+                <div id="quiz-active">
+                    <div class="quiz-meta">
+                        <span id="q-counter">Savol 1 / 5</span>
+                        <span id="q-score" style="color: var(--accent-emerald);">Ball: 0</span>
+                    </div>
+                    <div class="quiz-progress">
+                        <div id="q-bar" class="quiz-progress-bar"></div>
+                    </div>
+
+                    <div id="q-text" class="quiz-question">Savol yuklanmoqda...</div>
+                    <div id="q-options" class="quiz-options"></div>
+                    <div id="q-feedback" class="quiz-feedback"></div>
+
+                    <div class="quiz-footer">
+                        <button type="button" id="q-next" class="btn btn-primary" style="display: none;">Keyingi savol →</button>
+                    </div>
+                </div>
+
+                <div id="quiz-end" class="quiz-result">
+                    <div id="final-circle" class="result-score-circle">5/5</div>
+                    <h3 id="final-title">Ajoyib natija!</h3>
+                    <p id="final-desc">Siz kiberxavfsizlik qoidalarini juda yaxshi bilasiz.</p>
+                    <button type="button" id="q-restart" class="btn btn-primary">Testni Qayta Boshlash</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. FOOTER -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div>
+                <a href="#" class="brand" style="margin-bottom: 10px;">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    Cyber<span>Shield</span> UZ
+                </a>
+                <p class="footer-reminder">
+                    Eslatma: Bank xodimlari yoki davlat tashkilotlari hech qachon telefon orqali SMS tasdiqlash kodi yoki karta PIN-kodini so'ramaydi.
+                </p>
+            </div>
+            <div class="footer-copy">
+                © 2026 CyberShield UZ. Barcha huquqlar himoyalangan.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Mobil menyu
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navLinks = document.getElementById('nav-links');
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+
+        // Toast xabar funksiyasi
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 2500);
+        }
+
+        // Clipboard nusxa olish (iFrame uchun mos)
+        function copyText(text) {
+            if (!text) return;
+            const el = document.createElement('textarea');
+            el.value = text;
+            el.style.position = 'fixed';
+            el.style.opacity = '0';
+            document.body.appendChild(el);
+            el.select();
+            try {
+                document.execCommand('copy');
+                showToast("Nusxa olindi: " + text);
+            } catch (e) {
+                showToast("Nusxa olib bo'lmadi");
+            }
+            document.body.removeChild(el);
+        }
+
+        // =========================================================
+        // 1. KIBER TAHDIDLAR MA'LUMOTLARI (6 TA KARTA)
+        // =========================================================
+        const threats = [
+            {
+                title: "Phishing (Fishing)",
+                risk: "Yuqori xavf",
+                riskClass: "risk-high",
+                iconClass: "icon-cyan",
+                svg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 16.016c1.245-1.238 2-2.966 2-4.88 0-3.866-3.582-7-8-7s-8 3.134-8 7c0 1.914.755 3.642 2 4.88"/><path d="M12 12v9"/><path d="m9 18 3 3 3-3"/></svg>',
+                desc: "Firibgarlar mashhur bank, to'lov tizimi yoki ijtimoiy tarmoq nomidan soxta havola yuborib, login, parol va SMS kodlarni qo'lga kiritish usuli.",
+                defense: "Sayt manzilini (URL) tekshiring, shubhali havolalarga kirmang va SMS kodlarni hech kimga bermang."
+            },
+            {
+                title: "Ransomware (Tovlamachi)",
+                risk: "O'ta xavfli",
+                riskClass: "risk-high",
+                iconClass: "icon-rose",
+                svg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+                desc: "Kompyuter yoki serverdagi barcha muhim fayllarni shifrlab qo'yuvchi virus. Fayllarni ochish evaziga xakerlar katta miqdorda to'lov talab qiladi.",
+                defense: "Muhim fayllardan oflayn zaxira nusxa (Backup) oling va noma'lum elektron xat ilovalarini ochmang."
+            },
+            {
+                title: "Malware (Zararli dastur)",
+                risk: "Yuqori xavf",
+                riskClass: "risk-high",
+                iconClass: "icon-amber",
+                svg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="6" width="8" height="14" rx="4"/><path d="m19 7-3 2"/><path d="m5 7 3 2"/><path d="m19 19-3-2"/><path d="m5 19 3-2"/><path d="M20 13h-4"/><path d="M4 13h4"/></svg>',
+                desc: "Qurilmaga yashirincha o'rnashib olib, klaviaturada terilgan parollarni yozib oluvchi (Keylogger) yoki qurilmani masofadan boshqaruvchi viruslar.",
+                defense: "Dasturlarni faqat rasmiy do'konlardan (Google Play, App Store) yuklang va antivirus ishlating."
+            },
+            {
+                title: "DDoS Hujumlar",
+                risk: "Tarmoq xavfi",
+                riskClass: "risk-med",
+                iconClass: "icon-purple",
+                svg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>',
+                desc: "Server yoki veb-saytga bir vaqtda millionlab soxta so'rovlar yuborib, tizimni haddan tashqari yuklash va ishdan chiqarish hujumi.",
+                defense: "Trafik filtrlash tizimlari, CDN (Cloudflare) va DDoS-himoya devorlaridan foydalanish."
+            },
+            {
+                title: "Social Engineering",
+                risk: "Yuqori xavf",
+                riskClass: "risk-high",
+                iconClass: "icon-emerald",
+                svg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/></svg>',
+                desc: "Texnik buzish o'rniga inson ishonuvchanligi, qo'rquv yoki shoshqaloqligidan foydalanib maxfiy ma'lumotlarni aldov yo'li bilan olish.",
+                defense: "O'zini bank yoki ichki ishlar xodimi deb tanishtirgan notanish qo'ng'iroqlarga ishonmang, rasmiy raqamga qayta tering."
+            },
+            {
+                title: "Ma'lumotlar Sizib Chiqishi",
+                risk: "O'rta xavf",
+                riskClass: "risk-med",
+                iconClass: "icon-cyan",
+                svg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
+                desc: "Turli veb-saytlarning ma'lumotlar bazasi buzilishi natijasida foydalanuvchilarning elektron pochta, telefon raqam va parollari tarqalib ketishi.",
+                defense: "Har bir sayt uchun alohida parol o'rnating va parollarni muntazam yangilab turing."
+            }
+        ];
+
+        const threatsContainer = document.getElementById('threats-container');
+        threats.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'threat-card';
+            card.innerHTML = `
+                <div>
+                    <div class="threat-top">
+                        <div class="threat-icon ${item.iconClass}">${item.svg}</div>
+                        <span class="risk-pill ${item.riskClass}">${item.risk}</span>
+                    </div>
+                    <h3>${item.title}</h3>
+                    <p class="threat-desc">${item.desc}</p>
+                </div>
+                <div class="threat-defense">
+                    <div class="defense-label">✓ Himoyalanish usuli:</div>
+                    <p>${item.defense}</p>
+                </div>
+            `;
+            threatsContainer.appendChild(card);
+        });
+
+        // =========================================================
+        // 2. PAROL TEKSHIRGICH VA GENERATOR MANTIQI
+        // =========================================================
+        const pwdInput = document.getElementById('pwd-input');
+        const togglePwd = document.getElementById('toggle-pwd');
+        const strengthText = document.getElementById('strength-text');
+        const strengthFill = document.getElementById('strength-fill');
+        const crackTime = document.getElementById('crack-time');
+        const entropyVal = document.getElementById('entropy-val');
+
+        togglePwd.addEventListener('click', () => {
+            pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
+        });
+
+        function formatTime(sec) {
+            if (sec < 0.01) return "Bir zumda (0.001 soniya)";
+            if (sec < 60) return Math.round(sec) + " soniya";
+            const min = sec / 60;
+            if (min < 60) return Math.round(min) + " daqiqa";
+            const hr = min / 60;
+            if (hr < 24) return Math.round(hr) + " soat";
+            const days = hr / 24;
+            if (days < 365) return Math.round(days) + " kun";
+            const yrs = days / 365;
+            if (yrs < 1000) return Math.round(yrs) + " yil";
+            if (yrs < 1e6) return (yrs / 1000).toFixed(1) + " ming yil";
+            return "Millionlab yillar";
+        }
+
+        function checkPassword(val) {
+            const hasLen = val.length >= 8;
+            const hasUpper = /[A-Z]/.test(val);
+            const hasNum = /[0-9]/.test(val);
+            const hasSym = /[^A-Za-z0-9]/.test(val);
+
+            document.getElementById('chk-len').classList.toggle('passed', hasLen);
+            document.getElementById('chk-upper').classList.toggle('passed', hasUpper);
+            document.getElementById('chk-num').classList.toggle('passed', hasNum);
+            document.getElementById('chk-sym').classList.toggle('passed', hasSym);
+
+            if (!val) {
+                strengthText.textContent = "Kiritilmagan";
+                strengthText.style.color = "var(--text-muted)";
+                strengthFill.style.width = "0%";
+                crackTime.textContent = "—";
+                entropyVal.textContent = "0 bit";
+                return;
+            }
+
+            let pool = 26;
+            if (hasUpper) pool += 26;
+            if (hasNum) pool += 10;
+            if (hasSym) pool += 32;
+
+            const entropy = Math.round(val.length * Math.log2(pool));
+            entropyVal.textContent = entropy + " bit";
+
+            const combinations = Math.pow(pool, val.length);
+            let seconds = combinations / 1e10;
+
+            const weakList = ['123456', 'qwerty', 'password', 'uzbekistan', 'admin', '111111'];
+            const isWeak = weakList.some(w => val.toLowerCase().includes(w));
+            if (isWeak) seconds = 0.0005;
+
+            crackTime.textContent = formatTime(seconds);
+
+            let score = 0;
+            if (hasLen) score++;
+            if (val.length >= 12) score++;
+            if (hasUpper) score++;
+            if (hasNum) score++;
+            if (hasSym) score++;
+            if (isWeak) score = 1;
+
+            if (score <= 2) {
+                strengthText.textContent = "JUDA ZAIF";
+                strengthText.style.color = "#f43f5e";
+                strengthFill.style.width = "28%";
+                strengthFill.style.background = "#f43f5e";
+            } else if (score <= 4) {
+                strengthText.textContent = "O'RTACHA";
+                strengthText.style.color = "#f59e0b";
+                strengthFill.style.width = "65%";
+                strengthFill.style.background = "#f59e0b";
+            } else {
+                strengthText.textContent = "MUSTAHKAM";
+                strengthText.style.color = "#10b981";
+                strengthFill.style.width = "100%";
+                strengthFill.style.background = "linear-gradient(90deg, #00f0ff, #10b981)";
+            }
+        }
+
+        pwdInput.addEventListener('input', (e) => checkPassword(e.target.value));
+
+        // Generator
+        const genSlider = document.getElementById('gen-slider');
+        const lenDisplay = document.getElementById('len-display');
+        const genResult = document.getElementById('gen-result');
+
+        function generatePassword() {
+            const len = parseInt(genSlider.value, 10);
+            lenDisplay.textContent = len + " belgi";
+
+            let chars = "abcdefghijklmnopqrstuvwxyz";
+            if (document.getElementById('opt-upper').checked) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (document.getElementById('opt-num').checked) chars += "0123456789";
+            if (document.getElementById('opt-sym').checked) chars += "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+            const arr = new Uint32Array(len);
+            window.crypto.getRandomValues(arr);
+            let pwd = "";
+            for (let i = 0; i < len; i++) {
+                pwd += chars[arr[i] % chars.length];
+            }
+            genResult.textContent = pwd;
+        }
+
+        genSlider.addEventListener('input', generatePassword);
+        document.getElementById('opt-upper').addEventListener('change', generatePassword);
+        document.getElementById('opt-num').addEventListener('change', generatePassword);
+        document.getElementById('opt-sym').addEventListener('change', generatePassword);
+        document.getElementById('btn-generate').addEventListener('click', generatePassword);
+        document.getElementById('copy-gen').addEventListener('click', () => copyText(genResult.textContent));
+        document.getElementById('btn-test-gen').addEventListener('click', () => {
+            pwdInput.value = genResult.textContent;
+            pwdInput.type = 'text';
+            checkPassword(pwdInput.value);
+            showToast("Parol tekshirgichga o'tkazildi!");
+        });
+
+        generatePassword();
+
+        // =========================================================
+        // 3. INTERAKTIV 5 SAVOLLIK TEST
+        // =========================================================
+        const quizData = [
+            {
+                q: "Telegramda do'stingiz nomidan 'Tanlovda ovoz bering va 500 000 so'm yuting' degan havola keldi. Nima qilasiz?",
+                options: [
+                    "Darhol havolaga kirib, telefon raqam va SMS kodni kiritaman",
+                    "Havolaga kirmayman va do'stimga qo'ng'iroq qilib akkaunti buzilmaganini tekshiraman",
+                    "Havolani boshqa guruhlarga ham tarqataman"
+                ],
+                correct: 1,
+                info: "Bu 'Fishing' hujumi. Firibgarlar do'stingiz akkauntini egallab olib, uning nomidan soxta havolalar tarqatadi."
+            },
+            {
+                q: "O'zini 'Bank xavfsizlik xizmati' deb tanishtirgan shaxs qo'ng'iroq qilib, telefoningizga kelgan 6 xonali SMS kodni so'radi. Qanday yo'l tutasiz?",
+                options: [
+                    "Pulimni saqlab qolish uchun SMS kodni darhol aytaman",
+                    "Karta raqamimni aytaman, lekin SMS kodni aytmayman",
+                    "Suhbatni darhol to'xtataman — bank xodimi hech qachon SMS kod so'ramaydi"
+                ],
+                correct: 2,
+                info: "Haqiqiy bank xodimlari hech qachon mijozdan SMS kod, PIN yoki CVV kodni so'ramaydi."
+            },
+            {
+                q: "Quyidagi parollardan qaysi biri xakerlar hujumiga eng chidamli?",
+                options: [
+                    "Tashkent2026",
+                    "Qwerty12345!",
+                    "Qor@Bo'ron#84$Tog'!"
+                ],
+                correct: 2,
+                info: "Uzunligi 12 belgidan oshgan, katta-kichik harflar, raqam va maxsus belgilar qatnashgan parol eng ishonchli hisoblanadi."
+            },
+            {
+                q: "Ikki faktorli autentifikatsiya (2FA) nima uchun kerak?",
+                options: [
+                    "Internet tezligini oshirish uchun",
+                    "Parol o'g'irlangan taqdirda ham qo'shimcha kod orqali akkauntni himoyalash uchun",
+                    "Telefon xotirasini tozalash uchun"
+                ],
+                correct: 1,
+                info: "2FA yoqilganda xaker parolingizni bilsa ham, sizning telefoningizdagi tasdiqlash kodsiz akkauntga kira olmaydi."
+            },
+            {
+                q: "Kafe yoki aeroportdagi parolsiz (ochiq) Wi-Fi tarmog'iga ulanganda nima qilish xavfli?",
+                options: [
+                    "Ob-havo ma'lumotlarini ko'rish",
+                    "Bank ilovasiga kirish, parollar terish va onlayn to'lov qilish",
+                    "Yangiliklar saytini o'qish"
+                ],
+                correct: 1,
+                info: "Ochiq Wi-Fi tarmoqlarida xakerlar shifrlanmagan ma'lumotlar va parollarni ushlab qolishlari mumkin."
+            }
+        ];
+
+        let qIdx = 0;
+        let qScore = 0;
+        let qLocked = false;
+
+        const qCounter = document.getElementById('q-counter');
+        const qScoreEl = document.getElementById('q-score');
+        const qBar = document.getElementById('q-bar');
+        const qText = document.getElementById('q-text');
+        const qOptions = document.getElementById('q-options');
+        const qFeedback = document.getElementById('q-feedback');
+        const qNext = document.getElementById('q-next');
+
+        function loadQuestion() {
+            qLocked = false;
+            const item = quizData[qIdx];
+            qCounter.textContent = `Savol ${qIdx + 1} / ${quizData.length}`;
+            qScoreEl.textContent = `Ball: ${qScore}`;
+            qBar.style.width = ((qIdx + 1) / quizData.length * 100) + "%";
+            qText.textContent = item.q;
+            qFeedback.className = "quiz-feedback";
+            qNext.style.display = "none";
+            qOptions.innerHTML = "";
+
+            item.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + i)}</span><span>${opt}</span>`;
+                btn.addEventListener('click', () => selectOption(i, btn));
+                qOptions.appendChild(btn);
+            });
+        }
+
+        function selectOption(idx, btn) {
+            if (qLocked) return;
+            qLocked = true;
+            const item = quizData[qIdx];
+            const buttons = qOptions.querySelectorAll('.option-btn');
+            const isRight = idx === item.correct;
+
+            if (isRight) {
+                qScore++;
+                qScoreEl.textContent = `Ball: ${qScore}`;
+            }
+
+            buttons.forEach((b, i) => {
+                b.disabled = true;
+                if (i === item.correct) b.classList.add('correct');
+                else if (i === idx && !isRight) b.classList.add('wrong');
+            });
+
+            qFeedback.className = "quiz-feedback show " + (isRight ? "feedback-ok" : "feedback-bad");
+            qFeedback.innerHTML = (isRight ? "<strong>✅ To'g'ri!</strong> " : "<strong>❌ Noto'g'ri.</strong> ") + item.info;
+            qNext.textContent = qIdx === quizData.length - 1 ? "Natijani Ko'rish" : "Keyingi savol →";
+            qNext.style.display = "inline-flex";
+        }
+
+        qNext.addEventListener('click', () => {
+            qIdx++;
+            if (qIdx < quizData.length) {
+                loadQuestion();
+            } else {
+                document.getElementById('quiz-active').style.display = 'none';
+                document.getElementById('quiz-end').style.display = 'block';
+                document.getElementById('final-circle').textContent = `${qScore}/${quizData.length}`;
+                document.getElementById('final-title').textContent = qScore >= 4 ? "Kiber-Himoyachi Darajasi! 🏆" : "Yaxshi Urinish! 🛡️";
+                document.getElementById('final-desc').textContent = `Siz ${quizData.length} ta savoldan ${qScore} tasiga to'g'ri javob berdingiz. Oltin qoidalarga amal qilib, raqamli xavfsizligingizni yanada kuchaytiring.`;
+            }
+        });
+
+        document.getElementById('q-restart').addEventListener('click', () => {
+            qIdx = 0;
+            qScore = 0;
+            document.getElementById('quiz-end').style.display = 'none';
+            document.getElementById('quiz-active').style.display = 'block';
+            loadQuestion();
+        });
+
+        loadQuestion();
+    </script>
+</body>
+</html>
